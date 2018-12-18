@@ -12,8 +12,10 @@ Vagrant.configure("2") do |config|
     config.ssh.password = "vagrant"
     config.vm.box = "scotch/box"
     config.vm.network "private_network", ip: "192.168.33.10"
-    config.vm.hostname = "gladenfold.vm"
+    # config.vm.hostname = "gladenfold.vm"
+	config.vm.network "forwarded_port", guest: 80, host: 8080
 
+	
     # Use vagrant-winnfsd if available https://github.com/flurinduerst/WPDistillery/issues/78
     if Vagrant.has_plugin? 'vagrant-winnfsd'
       config.vm.synced_folder ".", "/var/www",
@@ -38,7 +40,7 @@ Vagrant.configure("2") do |config|
     end
 
     # Run Provisioning – executed within the first `vagrant up` and every `vagrant provision`
-    config.vm.provision "shell", path: "wpdistillery/provision.sh"
+    # config.vm.provision "shell", path: "wpdistillery/provision.sh"
 
     # OPTIONAL - Update WordPress and all Plugins on vagrant up – executed within every `vagrant up`
     #config.vm.provision "shell", inline: "echo \"== Update WordPress & Plugins ==\" && cd /var/www/public && wp core update && wp plugin update --all", run: "always", privileged: false
